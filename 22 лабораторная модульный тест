@@ -1,0 +1,62 @@
+import random
+import string
+from datetime import date
+
+# Глобальная переменная для генерации уникальных идентификаторов
+_patient_id_counter = 0
+
+def _generate_patient_id():
+    global _patient_id_counter
+    _patient_id_counter += 1
+    return _patient_id_counter
+
+class HospitalPatient:
+    def __init__(self, name="Unknown", age=0, diagnosis="None"):
+        # Генерация уникального ID пациента
+        self.patient_id = _generate_patient_id()
+        self.name = name
+        self.age = age
+        self.diagnosis = diagnosis
+        self.admission_date = date.today()
+
+    def __str__(self):
+        """Строковое представление пациента."""
+        return f"Patient ID: {self.patient_id}, Name: {self.name}, Age: {self.age}, Diagnosis: {self.diagnosis}, Admission Date: {self.admission_date}"
+
+
+import unittest
+
+
+class TestHospitalPatient(unittest.TestCase):
+    def setUp(self):
+        """Подготовка к тестам: создание пациента."""
+        self.patient1 = HospitalPatient(name="Ivanova Olga", age=30, diagnosis="grip")
+        self.patient2 = HospitalPatient(name="Popov Misha", age=28, diagnosis="Cold")
+        self.patient3 = HospitalPatient(name="Irikientov Maksim", age=40, diagnosis="COVID-19")
+
+    def test_default_constructor(self):
+        """Проверка конструктора по умолчанию (с параметрами по умолчанию)."""
+        default_patient = HospitalPatient()
+        self.assertEqual(default_patient.name, "Unknown")
+        self.assertEqual(default_patient.age, 0)
+        self.assertEqual(default_patient.diagnosis, "None")
+
+    def test_account_str(self):
+        """Проверка строкового представления пациента."""
+        expected_str = f"Patient ID: {self.patient1.patient_id}, Name: Ivanova Olga, Age: 30, Diagnosis: grip, Admission Date: {self.patient1.admission_date}"
+        self.assertEqual(str(self.patient1), expected_str)
+
+    def test_patient_id_generation(self):
+        """Проверка генерации уникальных идентификаторов пациентов."""
+        self.assertNotEqual(self.patient1.patient_id, self.patient2.patient_id)
+        self.assertNotEqual(self.patient2.patient_id, self.patient3.patient_id)
+
+    def test_patient_diagnosis(self):
+        """Проверка правильности хранения диагноза пациента."""
+        self.assertEqual(self.patient1.diagnosis, "grip")
+        self.assertEqual(self.patient2.diagnosis, "Cold")
+        self.assertEqual(self.patient3.diagnosis, "COVID-19")
+
+
+if __name__ == '__main__':
+    unittest.main()
