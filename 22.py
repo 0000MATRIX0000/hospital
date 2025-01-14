@@ -34,3 +34,26 @@ class Hospital:
             f"Capacity: {self.capacity}, Current Patients: {self.current_patients}, "
             f"Established Date: {self.established_date}"
         )
+
+if __name__ == "__main__":
+    # Создание двух больниц
+    hospital1 = Hospital(name="City Hospital", location="Downtown", capacity=100)
+    hospital2 = Hospital(name="Green Valley Clinic", location="Uptown", capacity=50)
+
+    print(hospital1)
+    print(hospital2)
+
+    # Госпитализация и выписка пациентов
+    hospital1.admit_patient()
+    hospital1.admit_patient()
+    print(hospital1)
+
+    hospital1.discharge_patient()
+    print(hospital1)
+
+    # Ошибка при переполнении больницы
+    try:
+        for _ in range(101):
+            hospital1.admit_patient()
+    except ValueError as e:
+        print(f"Error: {e}")
